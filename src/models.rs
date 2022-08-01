@@ -6,6 +6,15 @@ pub struct Mail {
     pub published: bool,
 }
 
+#[derive(Queryable)]
+pub struct Sender {
+    pub id: i32,
+    pub f: String,
+    pub l: String,
+    pub m: String,
+    pub pur: bool
+}
+
 use super::schema::mails;
 
 #[derive(Insertable)]
@@ -14,3 +23,4 @@ pub struct NewMail<'a> {
     pub title: &'a str,
     pub body: &'a str,
 }
+
