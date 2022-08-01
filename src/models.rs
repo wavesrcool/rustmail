@@ -5,3 +5,12 @@ pub struct Mail {
     pub body: String,
     pub published: bool,
 }
+
+use super::schema::mails;
+
+#[derive(Insertable)]
+#[table_name="mails"]
+pub struct NewMail<'a> {
+    pub title: &'a str,
+    pub body: &'a str,
+}

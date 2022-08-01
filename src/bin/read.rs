@@ -12,9 +12,9 @@ fn main() {
     let results = mails::table.filter(mails::published.eq(true))
         .limit(5)
         .load::<Mail>(&connection)
-        .expect("Error loading mails");
+        .expect("[rustmail] Error loading mails");
 
-    println!("Displaying {} mails", results.len());
+    println!("[rustmail] Displaying {} mails", results.len());
     for post in results {
         println!("{}", post.title);
         println!("----------\n");

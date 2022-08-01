@@ -10,6 +10,22 @@ use diesel::pg::PgConnection;
 use dotenv::dotenv;
 use std::env;
 
+use self::models::{Mail, NewMail};
+
+pub fn add_mail<'a>(conn: &PgConnection, title: &'a str, body: &'a str) -> Mail {
+    use schema::mails;
+
+    let new_mail = NewMail {
+        title: title,
+        body: body,
+    };
+
+    diesel::insert_into(mails::table)
+        .values(&new_mail)
+        .get_result(conn)
+        .expect("Error saving new mail")
+}
+
 pub fn establish_connection() -> PgConnection {
     dotenv().ok();
 
