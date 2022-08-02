@@ -63,12 +63,17 @@ fn receive_mail(receive: String) {
    
 }
 
-#[get("/")]
-fn index() -> &'static str {
-    "Hello, world!"
+#[derive(Responder)]
+#[response(status = 200, content_type = "json")]
+struct BreatheResponse(&'static str);
+
+#[get("/breathe")]
+fn breathe() -> BreatheResponse {
+    BreatheResponse("{ \"rust\": \"mail\" }")
 }
+
 
 #[launch]
 fn rocket() -> _ {
-    rocket::build().mount("/", routes![index]).mount("/", routes![receive_mail]).mount("/", routes![send_mail])
+    rocket::build().mount("/", routes![breathe]).mount("/", routes![receive_mail]).mount("/", routes![send_mail])
 }
