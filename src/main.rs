@@ -1,7 +1,8 @@
 #[macro_use] extern crate rocket;
 extern crate rustmail;
 
-//use rocket::serde::json::Json;
+//use core::any::Any;
+use rocket::serde::json::Json;
 use serde::{Serialize, Deserialize};
 
 // #[post("/user", format = "json", data = "<user>")]
@@ -10,26 +11,50 @@ use serde::{Serialize, Deserialize};
 //}
 
 extern crate serde;
-extern crate serde_json;
-
+use regex::Regex;
 // Import this crate to derive the Serialize and Deserialize traits.
 // #[macro_use] extern crate serde_derive;
 
 #[derive(Serialize, Deserialize, Debug)]
-struct Sender {
-    x: i32,
-    y: i32,
+struct MailsSend {
+    to: String,
+    from: String
 }
 
-#[post("/send", data = "<send>")]
-fn send_mails(send: String) {
-    println!("{:?} SEND!", send);
+#[post("/send", format = "json", data = "<send>")]
+fn send_mail(send: Json<MailsSend>) {
+    println!("{:?} send!", &send);
 
-    let deserialized: Sender = serde_json::from_str(&send).unwrap();
-    println!("deserialized = {:?}", deserialized);
-    println!("deserialized.x = {:?}", deserialized.x);
-    println!("deserialized.y = {:?}", deserialized.y);
+    let to = &send.to;
+    let from = &send.from;
+   
+    println!("{:?} to!", to);
+    println!("{:?} from!", from);
 
+}
+
+#[post("/receive", data = "<receive>")]
+fn receive_mail(receive: String) {
+    println!("{:?} receive!", receive);
+
+    //let deserialized:  = serde_json::from_str(&receive).unwrap();
+    //println!("deserialized = {:?}", deserialized);
+    //println!("deserialized.x = {:?}", deserialized.x);
+    //println!("deserialized.y = {:?}", deserialized.y);
+
+    let body_plain_regex = Regex::new(r"^&body-plain=([\s\S]*)&stripped-text=$").unwrap();
+    let body_plain_match = body_plain_regex.is_match(&receive);
+
+    println!("body_plain_match = {:?}", body_plain_match);
+
+    if body_plain_match { 
+        let body_plain_result: Vec<&str> = body_plain_regex.find_iter(&receive).map(|x| x.as_str()).collect();
+        println!("body_plain_result = {:?}", body_plain_result);
+
+    }
+
+    //println!("{:?}", result1);
+    //println!("{:?}", result1[1]);
 
     //println!("point = {}", point);
 
@@ -45,5 +70,5 @@ fn index() -> &'static str {
 
 #[launch]
 fn rocket() -> _ {
-    rocket::build().mount("/", routes![index]).mount("/", routes![send_mails])
+    rocket::build().mount("/", routes![index]).mount("/", routes![receive_mail]).mount("/", routes![send_mail])
 }

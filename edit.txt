@@ -1,0 +1,46 @@
+let s:String = "Hello, world!".chars()
+    .map(|x| match x { 
+        '!' => '?', 
+        'A'..='Z' => 'X', 
+        'a'..='z' => 'x',
+        _ => x
+    }).collect();
+println!("{}", s);// Xxxxx, xxxxx?
+
+password valid
+
+fn is_password_valid(s: &str) -> bool {
+    let mut has_whitespace = false;
+    let mut has_upper = false;
+    let mut has_lower = false;
+    let mut has_digit = false;
+
+    for c in s.chars() {
+        has_whitespace |= c.is_whitespace();
+        has_lower |= c.is_lowercase();
+        has_upper |= c.is_uppercase();
+        has_digit |= c.is_digit(10);
+    }
+
+    !has_whitespace && has_upper && has_lower && has_digit && s.len() >= 8
+}
+
+
+same but as regex
+
+pub fn validate_password(string: &str) -> bool {
+  let regex_no_whitespaces = Regex::new(r"^\s*\S+\s*$").unwrap();
+  let no_whitespaces = regex_no_whitespaces.is_match(&string);
+  let regex_one_uppercase = Regex::new(r"[a-z]{1,}").unwrap();
+  let one_uppercase = regex_one_uppercase.is_match(&string);
+  let regex_one_lowercase = Regex::new(r"[A-Z]{1,}").unwrap();
+  let one_lowercase = regex_one_lowercase.is_match(&string);
+  let regex_one_digit = Regex::new(r"[0-9]{1,}").unwrap();
+  let one_digit = regex_one_digit.is_match(&string);
+  let regex_length = Regex::new(r".{8,}").unwrap();
+  let length = regex_length.is_match(&string);
+
+  let is_valid = no_whitespaces && one_uppercase && one_lowercase && one_digit && length;
+
+  return is_valid;
+}
