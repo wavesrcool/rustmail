@@ -1,5 +1,7 @@
 {
     "[rust]": {
+        "editor.defaultFormatter": "paritytech.vscode-substrate",
         "editor.formatOnSave": true,
     }, 
+  
 }
