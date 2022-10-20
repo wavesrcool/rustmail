@@ -5,6 +5,7 @@ use self::diesel::prelude::*;
 use self::rustmail::*;
 use std::env::args;
 
+//
 fn main() {
     use rustmail::schema::mails::dsl::*;
 

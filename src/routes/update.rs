@@ -1,6 +1,7 @@
 extern crate rustmail;
 extern crate diesel;
 
+//
 use self::diesel::prelude::*;
 use self::rustmail::*;
 use self::models::Mail;

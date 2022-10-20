@@ -5,6 +5,7 @@ use self::rustmail::*;
 use self::models::*;
 use self::diesel::prelude::*;
 
+//
 fn main() {
     use rustmail::schema::mails;
 

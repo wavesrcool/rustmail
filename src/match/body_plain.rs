@@ -1,7 +1,6 @@
 pub mod body_plain;
 
 use regex::Regex;
-//use quoted_printable::{decode, ParseMode};
 
 fn quoted_printable_body_plain() {
     let body_plain_regex = Regex::new(r"&body-plain=([\s\S]*)&stripped-text=").unwrap();

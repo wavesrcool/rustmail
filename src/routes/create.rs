@@ -4,6 +4,8 @@ extern crate diesel;
 use self::rustmail::*;
 use std::env::args;
 
+//
+
 fn main() {
     let connection = establish_connection();
 
